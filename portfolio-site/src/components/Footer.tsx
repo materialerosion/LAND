@@ -21,11 +21,11 @@ export default function Footer() {
             </svg>
           </a>
           <a
-            href={personalInfo.socials.twitter}
+            href={personalInfo.socials.linkedin}
             target="_blank"
             rel="noopener noreferrer"
             className="social-link"
-            aria-label="Twitter / X"
+            aria-label="LinkedIn"
           >
             {/* LinkedIn icon */}
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

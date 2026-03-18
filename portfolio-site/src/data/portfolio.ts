@@ -2,6 +2,14 @@
 // PORTFOLIO DATA — Edit this file to update your portfolio
 // ============================================================
 
+/** Rotating subtitles shown one at a time in the hero (cycle order) */
+export const rotatingSubtitles = [
+  "AI Product Builder",
+  "Doctor of Pharmacy",
+  "Project Management Professional",
+  "Product Development Expert",
+];
+
 export const personalInfo = {
   name: "Leyu (Liam) Zhang",
   title: "AI Product Builder",
@@ -12,7 +20,6 @@ export const personalInfo = {
   email: "liam.zhang@bayer.com",
   socials: {
     github: "https://github.com/materialerosion",
-    twitter: "https://twitter.com/yourusername",
     linkedin: "https://www.linkedin.com/in/liam-zhang-pharmd/",
   },
 };
@@ -140,7 +147,7 @@ export const apps: App[] = [
   {
     id: "gist-local",
     name: "GIST - Generative Insights Summarization Tool",
-    tagline: "Summarize generative insights from clinical trials and other documents.",
+    tagline: "Get thorough insights from clinical trials with the help of AI.",
     description:
       "GIST is a tool that allows you to summarize insights from clinical trials with AI, extracting key medical insights into an organized excel report.",
     category: "clinical-research",
@@ -176,12 +183,12 @@ export const apps: App[] = [
   {
     id: "oad-sprint",
     name: "Ideation Sprint Assistant",
-    tagline: "AI-assisted ideation sprint tool.",
+    tagline: "AI-assisted ideation sprint assistant.",
     description:
       "Assistant in myGenAssist with pre-loaded data for ideation sprint used in 2025 OAD sprint to fill 2027 pipeline.",
     category: "innovation-assistants",
     status: "live",
-    url: "https://jolly-dune-0d988150f.6.azurestaticapps.net/",
+    url: "https://chat.int.bayer.com/conversations/new?assistant=0d19ed31-d335-47fe-9535-030f4b4f0279",
     tech: ["myGenAssist"],
     icon: "💬",
   },

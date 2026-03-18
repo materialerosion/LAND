@@ -1,6 +1,7 @@
 "use client";
-import { motion } from "framer-motion";
-import { personalInfo } from "@/data/portfolio";
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { personalInfo, rotatingSubtitles } from "@/data/portfolio";
 
 function fadeUp(delay: number) {
   return {
@@ -64,6 +65,35 @@ const HEX_TILES: HexTile[] = (() => {
 const SVG_W = Math.round(COLS * HEX_W);
 const SVG_H = Math.round(ROWS * ROW_H);
 
+function RotatingSubtitle({ items, intervalMs }: { items: string[]; intervalMs: number }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (items.length <= 1) return;
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % items.length);
+    }, intervalMs);
+    return () => clearInterval(id);
+  }, [items.length, intervalMs]);
+
+  return (
+    <span className="rotating-subtitle" aria-live="polite">
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={items[index]}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          style={{ display: "inline-block" }}
+        >
+          {items[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
+
 export default function Hero() {
   return (
     <section className="hero">
@@ -104,10 +134,10 @@ export default function Hero() {
           {personalInfo.name}
         </motion.h1>
 
-        {/* Title */}
-        <motion.p className="hero-title" {...fadeUp(0.2)}>
-          {personalInfo.title}
-        </motion.p>
+        {/* Rotating subtitle */}
+        <motion.div className="hero-title" {...fadeUp(0.2)} style={{ minHeight: "1.5em", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <RotatingSubtitle items={rotatingSubtitles} intervalMs={5000} />
+        </motion.div>
 
         {/* Tagline */}
         <motion.p className="hero-tagline" {...fadeUp(0.3)}>
@@ -123,7 +153,7 @@ export default function Hero() {
             About Me
           </a>
           <a href={`mailto:${personalInfo.email}`} className="btn-ghost">
-            Get in Touch
+            Get in Touch (email)
           </a>
         </motion.div>
 

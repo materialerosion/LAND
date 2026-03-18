@@ -32,13 +32,14 @@ export default function About() {
           >
             <p>{personalInfo.description}</p>
             <p>
+              My experience with living the problems allows me to build and ship in rapid cycles.
               I work at the intersection of AI research and product development —
               taking messy domain expertise (formulas, clinical data, user psychology,
-              innovation frameworks) and wrapping it in interfaces that feel effortless.
+              innovation frameworks) and wrapping it in intuitive interfaces that feel effortless.
             </p>
             <p>
               Every app I ship starts with a real workflow problem and ends with a
-              tool people actually use. No AI demos. No vaporware.
+              tool people actually use. No fake AI demos. No vaporware.
             </p>
 
             <div style={{ marginTop: "1.5rem", display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
@@ -47,9 +48,6 @@ export default function About() {
               </a>
               <a href={personalInfo.socials.linkedin} target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ fontSize: "0.82rem" }}>
                 LinkedIn →
-              </a>
-              <a href={personalInfo.socials.twitter} target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ fontSize: "0.82rem" }}>
-                Twitter/X →
               </a>
             </div>
           </motion.div>
