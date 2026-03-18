@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { apps, categories, type AppCategory } from "@/data/portfolio";
 
@@ -7,15 +7,39 @@ const statusLabels: Record<string, string> = {
   live: "Live",
   beta: "Beta",
   "in-progress": "In Progress",
+  "on-hold": "On Hold",
 };
+
+const STATUS_ORDER: (typeof apps)[number]["status"][] = [
+  "live",
+  "beta",
+  "in-progress",
+  "on-hold",
+];
+
+function sortByStatus<T extends { status: (typeof apps)[number]["status"] }>(
+  list: T[]
+): T[] {
+  return [...list].sort(
+    (a, b) =>
+      STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status)
+  );
+}
 
 export default function AppsShowcase() {
   const [activeCategory, setActiveCategory] = useState<AppCategory>("all");
+  const [showInDevelopment, setShowInDevelopment] = useState(false);
 
-  const filtered =
-    activeCategory === "all"
-      ? apps
-      : apps.filter((a) => a.category === activeCategory);
+  const filtered = useMemo(() => {
+    let list =
+      activeCategory === "all"
+        ? apps
+        : apps.filter((a) => a.category === activeCategory);
+    if (!showInDevelopment) {
+      list = list.filter((a) => a.status === "live");
+    }
+    return sortByStatus(list);
+  }, [activeCategory, showInDevelopment]);
 
   return (
     <section id="apps">
@@ -24,7 +48,7 @@ export default function AppsShowcase() {
           <span className="section-accent">⟩</span> Shipped Apps
         </h2>
 
-        {/* Category filter tabs */}
+        {/* Category filter tabs + in-development toggle */}
         <div className="category-tabs" role="tablist" aria-label="App categories">
           {categories.map((cat) => (
             <button
@@ -38,6 +62,19 @@ export default function AppsShowcase() {
               {cat.label}
             </button>
           ))}
+          <label
+            className={`category-tab in-dev-toggle${showInDevelopment ? " active" : ""}`}
+            aria-label="Show in-development apps"
+          >
+            <input
+              type="checkbox"
+              checked={showInDevelopment}
+              onChange={(e) => setShowInDevelopment(e.target.checked)}
+              tabIndex={0}
+            />
+            <span aria-hidden>🛠️</span>
+            <span>In development</span>
+          </label>
         </div>
 
         {/* Count indicator */}

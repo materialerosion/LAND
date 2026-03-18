@@ -10,13 +10,93 @@ function fadeUp(delay: number) {
   };
 }
 
+// ── Hex grid generation ────────────────────────────────────────────────────────
+const HEX_R   = 20;                       // circumradius  (center → vertex)
+const HEX_W   = Math.sqrt(3) * HEX_R;    // col spacing   ≈ 34.6 px
+const ROW_H   = HEX_R * 1.5;             // row spacing   = 30 px
+const DRAW_R  = HEX_R - 2;               // drawn radius  (gap = √3 × 2 ≈ 3.5 px)
+const COLS    = 38;
+const ROWS    = 26;
+
+// Deterministic pseudo-random from integer seeds
+function seededRand(a: number, b: number): number {
+  const s = Math.sin(a * 127.1 + b * 311.7) * 43758.5453;
+  return s - Math.floor(s);
+}
+
+// Pointy-top hexagon vertices
+function hexPoints(cx: number, cy: number, r: number): string {
+  return Array.from({ length: 6 }, (_, i) => {
+    const a = (Math.PI / 3) * i - Math.PI / 6;
+    return `${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`;
+  }).join(" ");
+}
+
+interface HexTile { points: string; sOp: number; fOp: number; key: string }
+
+// Built once at module level — stable across renders
+const HEX_TILES: HexTile[] = (() => {
+  const tiles: HexTile[] = [];
+  for (let row = 0; row < ROWS; row++) {
+    const t           = row / (ROWS - 1);              // 0 = top, 1 = bottom
+    const survive     = Math.pow(1 - t, 1.8);          // sharp falloff toward bottom
+    const cy          = row * ROW_H + HEX_R;
+    const xOff        = row % 2 === 1 ? HEX_W / 2 : 0;
+
+    for (let col = 0; col < COLS; col++) {
+      if (seededRand(col, row) > survive) continue;
+
+      const jitter    = seededRand(col + 50, row + 50) * 0.06;
+      const sOp       = (1 - t) * 0.30 + 0.02 + jitter;
+      const fOp       = (1 - t) * 0.06;
+
+      tiles.push({
+        points : hexPoints(col * HEX_W + xOff, cy, DRAW_R),
+        sOp,
+        fOp,
+        key    : `${row}-${col}`,
+      });
+    }
+  }
+  return tiles;
+})();
+
+const SVG_W = Math.round(COLS * HEX_W);
+const SVG_H = Math.round(ROWS * ROW_H);
+
 export default function Hero() {
   return (
     <section className="hero">
-      <div className="container">
+      {/* Hexagonal tile background */}
+      <div className="hero-geo-bg" aria-hidden="true">
+        <svg
+          width="100%"
+          height="100%"
+          viewBox={`0 0 ${SVG_W} ${SVG_H}`}
+          preserveAspectRatio="xMidYMin slice"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {HEX_TILES.map(({ points, sOp, fOp, key }) => (
+            <polygon
+              key={key}
+              points={points}
+              fill={`rgba(59,130,246,${fOp.toFixed(3)})`}
+              stroke={`rgba(96,165,250,${sOp.toFixed(3)})`}
+              strokeWidth="0.75"
+            />
+          ))}
+        </svg>
+      </div>
+
+      <div className="container hero-content">
         {/* Avatar */}
         <motion.div {...fadeUp(0)}>
-          <div className="hero-avatar-placeholder">🤖</div>
+          {personalInfo.avatar ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={personalInfo.avatar} alt={personalInfo.name} className="hero-avatar" />
+          ) : (
+            <div style={{ width: 80, height: 80, margin: "0 auto 1.5rem" }} aria-hidden="true" />
+          )}
         </motion.div>
 
         {/* Name */}
@@ -81,3 +161,4 @@ export default function Hero() {
     </section>
   );
 }
+

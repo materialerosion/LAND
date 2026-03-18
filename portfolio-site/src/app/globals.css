@@ -45,6 +45,7 @@
   --status-live: #22c55e;
   --status-beta: #f59e0b;
   --status-progress: #60a5fa;
+  --status-on-hold: #94a3b8;
 
   /* Star / nebula particle color */
   --star-color-hi: rgba(255, 255, 255, 0.85);
@@ -499,6 +500,52 @@ section {
   background: var(--coral-glow);
 }
 
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--coral);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.7rem 1.6rem;
+  border-radius: 8px;
+  border: 2px solid var(--coral);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.btn-secondary:hover {
+  background: var(--coral);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
+}
+
+.testimonial-cta-box {
+  margin: 2.5rem auto 0;
+  max-width: 480px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.testimonial-cta-label {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
 /* ============================================================
    STATUS BADGES
    ============================================================ */
@@ -532,6 +579,12 @@ section {
   border: 1px solid rgba(96, 165, 250, 0.25);
 }
 
+.status-badge.on-hold {
+  color: var(--status-on-hold);
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
 /* ============================================================
    CATEGORY TABS
    ============================================================ */
@@ -556,6 +609,8 @@ section {
   color: var(--text-secondary);
   transition: all 0.2s ease;
   font-family: var(--font-body);
+  flex: 0 0 auto;
+  width: max-content;
 }
 
 .category-tab:hover {
@@ -568,6 +623,25 @@ section {
   border-color: var(--coral);
   color: #fff;
   font-weight: 700;
+}
+
+.in-dev-toggle {
+  user-select: none;
+}
+
+.in-dev-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ============================================================
@@ -660,9 +734,25 @@ section {
    HERO
    ============================================================ */
 .hero {
+  position: relative;
+  overflow: hidden;
   padding-top: 6rem;
   padding-bottom: 4rem;
   text-align: center;
+}
+
+/* Hexagonal tile background layer */
+.hero-geo-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Content sits above the background */
+.hero-content {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-avatar {

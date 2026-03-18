@@ -1,5 +1,5 @@
 "use client";
-import { testimonials } from "@/data/portfolio";
+import { testimonials, testimonialSurveyUrl } from "@/data/portfolio";
 
 // Split testimonials into two rows
 const row1 = testimonials.slice(0, Math.ceil(testimonials.length / 2));
@@ -47,6 +47,22 @@ export default function Testimonials() {
           ))}
         </div>
       </div>
+
+      {testimonialSurveyUrl && (
+        <div className="container" style={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
+          <div className="testimonial-cta-box">
+            <p className="testimonial-cta-label">Worked with me or used one of my tools? I&rsquo;d love to hear from you.</p>
+            <a
+              href={testimonialSurveyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
+            >
+              Submit a Testimonial
+            </a>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
