@@ -115,7 +115,7 @@ export const apps: App[] = [
       "Framework and app for generating and using synthetic user personas in lifelike experiences. Test flows and copy with AI personas before real users.",
     category: "synthetic-personas",
     status: "live",
-    url: "https://github.com/materialerosion/ACT",
+    url: "https://blue-wave-0e44e890f.3.azurestaticapps.net/",
     tech: ["TypeScript","myGenAssist"],
     icon: "🧪",
   },
